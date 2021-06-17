@@ -1,0 +1,49 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int solution(vector<int> scoville, int K) {
+    int answer = 0;
+    bool bexistsmall = true;
+    
+    vector<int> sortArray;
+    int i =0;
+    
+    while(bexistsmall)
+    {
+        //벡터 정렬
+        sort(scoville.begin() , scoville.end());
+        
+        //k이상 만들수 없는 경우 
+        if((scoville.size() == 1  && scoville[1] < K ) || (scoville.size() ==2 && ((scoville[1] + scoville[2]*2 )> K) ))
+            return -1;
+        
+        
+        for(int i = 0 ; i < scoville.size(); i++)
+        {
+            
+            if( scoville[i] < K)
+            {
+                int nresult = scoville[i] + (scoville[i+1]*2);
+              
+                //벡터에 기존 두개값 삭제하고 새 값 삽입
+                scoville.erase(scoville.begin()  + i);
+                scoville.erase(scoville.begin()  + i);
+                scoville.insert(scoville.begin() , nresult);
+                
+                answer++;
+                
+            }
+            else //k보다 큰수는 나오면 for문 종료 
+            {
+                //벡터 첫번쨰 인수가 k보다 크면 while문 종료 
+                if(i == 0)
+                    bexistsmall = false;
+            }
+            
+            break;
+        }
+    }
+    return answer;
+}
