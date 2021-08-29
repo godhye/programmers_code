@@ -1,98 +1,51 @@
-#include <stdio.h>
+#include <string>
 #include <vector>
 #include <algorithm>
 #include <iostream>
-#include <string>
-#include <queue>
-#include <stack>
 #include <math.h>
-#include <unordered_set>
-#include <string>
-#include <vector>
-#include <map>
+
 using namespace std;
 
-bool mycompare(pair<int, int >a, pair<int, int >b)
+bool mycompare(pair<int  , int >a , pair<int, int >b)
 {
 	if (a.first != b.first)
 		return a.first > b.first;
 	else
 		return a.second > b.second;
-
+	
 }
 
-int main()
-{
-	vector<int> numbers;
-	numbers.push_back(999);
-	numbers.push_back(998);
-	numbers.push_back(9);
-	numbers.push_back(90);
-	
-	/*numbers.push_back(30);
-	numbers.push_back(7);
-	numbers.push_back(77);
-	numbers.push_back(34);
-	numbers.push_back(5);
-	numbers.push_back(9);
-	 */
-	//95444310
 
-	vector<pair<int, int>> vnum;
-	string answer = "";
-	long long totalsum = 0;
+string solution(vector<int> numbers) {
+   
+	string anwser;
+	vector<pair<int, int>> nums;
+
+	//vec안에 숫자 네자리수로 맞춰주기
 	for (auto v : numbers)
 	{
-		//모든값 0인지 확인용
-		totalsum += v;
+		string str = to_string(v);
 
-		int i = 0;
-		//0 1000 값 제외 3자리수로 맞춰주기
-		while (v * 10 < 1000 && v != 0 && v != 1000)
+		 
+		int nindex = 0;
+		for (int i = 4 - str.length(); i > 0; i--, nindex++)
 		{
-			v = v * 10;
-			i++;
+			string s = to_string(str[nindex] -48);
+			str.append(s);
 		}
 
-		//셋자리수값 , 10 곱한 횟수
-		if (v == 1000)
-		{
-			vnum.push_back({ 1 , i });
-			continue;
-		}
-		vnum.push_back({ v , i });
-
+		nums.push_back({ -stoi(str), v });
 	}
 
-	//첫번째값 비교, 같으면 10곱해준 값으로 크기 정렬
-	sort(vnum.begin(), vnum.end(), mycompare);
+	//정렬하기
+	sort(nums.begin(), nums.end()  );
 
-	//곱해준만큼 뺴서 문자열로 치환 
-	for (auto v : vnum)
-	{
-		int nfirst = v.first;
-		int nsecond = v.second;
+	for (auto v : nums)
+		anwser.append(to_string(v.second));
+	
 
-		if (nfirst == 1)
-		{
-			answer.append(to_string(1000));
-			continue;
-		}
-
-		if (0 != nsecond)
-			nfirst = nfirst / pow(10, nsecond);
-
-		
-		answer.append(to_string(nfirst));
-	}
-
-
-	if (totalsum == 0)
-		//return "0";
-		cout << "0";
-	else
-		//return answer;
-		cout << answer;
-
-		return 0;
+	if (nums[0].second == 0)
+		return "0";
+        
+    return anwser;
 }
